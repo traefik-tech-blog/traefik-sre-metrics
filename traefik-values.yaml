@@ -1,0 +1,2 @@
+additionalArguments:
+  - "--metrics.prometheus=true"
