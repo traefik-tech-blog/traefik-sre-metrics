@@ -7,13 +7,13 @@ metadata:
   labels:
     app: kube-prometheus-stack
     release: prometheus-stack
-  name: treafik-alert-rules
+  name: traefik-alert-rules
   namespace: default
 spec:
   groups:
-  - name: Treafik
+  - name: Traefik
     rules:
-    - alert: TooManyRequest
+    - alert: TooManyRequests
       expr: avg(traefik_entrypoint_open_connections{job="traefik-dashboard",namespace="kube-system"})
         > 5
       for: 1m
