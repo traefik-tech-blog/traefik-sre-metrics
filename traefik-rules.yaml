@@ -13,7 +13,7 @@ spec:
   groups:
   - name: Traefik
     rules:
-    - alert: TooManyRequests
+    - alert: TooManyRequest
       expr: avg(traefik_entrypoint_open_connections{job="traefik-dashboard",namespace="kube-system"})
         > 5
       for: 1m
