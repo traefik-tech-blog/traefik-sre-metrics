@@ -1,4 +1,4 @@
-# traefik-k3s-metrics
+# traefik-sre-metrics
 
 The repository contains configuration for the following components:
  - Prometheus
