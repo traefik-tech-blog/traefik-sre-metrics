@@ -1,6 +1,3 @@
-# traefik-sre-metrics
+# Capture Traefik Metrics for Apps on Kubernetes with Prometheus
 
-The repository contains configuration for the following components:
- - Prometheus
- - Traefik v2
- - HttpBin
+The repository contains configuration files of [this tutorial](https://traefik.io/blog/capture-traefik-metrics-for-apps-on-kubernetes-with-prometheus/). 

@@ -1,0 +1,24 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`prometheus.docker.localhost`) || PathPrefix(`/prometheus`)
+    kind: Rule
+    middlewares:
+    - name: strip-prometheus-prefix
+    services:
+    - name: prometheus
+      port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-prometheus-prefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /prometheus

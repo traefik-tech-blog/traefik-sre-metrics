@@ -1,0 +1,41 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: default
+  name: traefik
+  labels:
+    app: traefik
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+      annotations:
+        # Prometheus will scrape metrics, and only once, on port 80
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      containers:
+        - name: traefik
+          image: traefik:v2.6
+          imagePullPolicy: IfNotPresent
+          args:
+            - --configfile=/config/static.yaml
+          volumeMounts:
+            - name: static-config
+              mountPath: "/config"
+          ports:
+            - name: web
+              containerPort: 80
+            - name: websecure
+              containerPort: 443
+      volumes:
+        - name: static-config
+          configMap:
+            name: traefik-static-config 

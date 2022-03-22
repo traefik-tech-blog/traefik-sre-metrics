@@ -1,0 +1,15 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-metrics
+  namespace: default
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`metrics.docker.localhost`) || PathPrefix(`/metrics`)
+      services:
+        - name: prometheus@internal
+          kind: TraefikService

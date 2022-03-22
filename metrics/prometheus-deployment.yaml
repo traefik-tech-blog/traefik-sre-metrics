@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--web.enable-lifecycle" 
+            - "--storage.tsdb.path=/prometheus/data"
+            - "--storage.tsdb.wal-compression"
+            - "--storage.tsdb.retention.size=1GB"
+            - "--storage.tsdb.retention.time=2h" 
+            - "--log.level=debug"
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: prometheus-config
+              mountPath: /etc/prometheus/
+            - name: prometheus-storage
+              mountPath: /prometheus/
+      serviceAccountName: prometheus
+      securityContext:
+        fsGroup: 2000
+        runAsNonRoot: true
+        runAsUser: 1000
+      volumes:
+        - name: prometheus-config
+          configMap:
+            defaultMode: 420
+            name: prometheus-config
+        - name: prometheus-storage
+          emptyDir: {}

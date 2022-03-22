@@ -1,0 +1,24 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: whoami
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`whoami.docker.localhost`) || PathPrefix(`/whoami`)
+    kind: Rule
+    middlewares:
+    - name: strip-whoami-prefix
+    services:
+    - name: whoami
+      port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-whoami-prefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /whoami
